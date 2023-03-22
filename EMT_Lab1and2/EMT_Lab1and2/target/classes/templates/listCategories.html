@@ -1,0 +1,10 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <table>
+        <tr>
+            <th>Category</th>
+        </tr>
+        <tr class="item" th:each="category: ${categories}">
+            <td th:text="${category}"></td>
+        </tr>
+    </table>
+</div>

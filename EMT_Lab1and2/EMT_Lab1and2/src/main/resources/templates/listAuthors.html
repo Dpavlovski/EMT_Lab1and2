@@ -1,0 +1,27 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="">
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <a href="/authors/add" class="add-item">
+            Add a new author
+        </a>
+    </th:block>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Country</th>
+        </tr>
+        <tr class="item" th:each="author: ${authors}">
+            <td th:text="${author.name}"></td>
+            <td th:text="${author.surname}"></td>
+            <td th:text="${author.country.name}"></td>
+            <td>
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <form method="post" th:action="@{'/authors/{id}/delete' (id=${author.id})}">
+                        <button type="submit" class="delete-item">Delete</button>
+                    </form>
+                    <a class="edit-item" th:href="@{'/authors/{id}/edit' (id=${author.id})}">Edit</a>
+                </th:block>
+            </td>
+        </tr>
+    </table>
+</div>

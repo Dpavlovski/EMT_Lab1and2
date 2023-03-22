@@ -1,0 +1,32 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="">
+        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{'/books/add'}" class="add-item">
+                Add a new book
+            </a>
+        </th:block>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>AvailableCopies</th>
+        </tr>
+        <tr class="item" th:each="book: ${books}">
+            <td th:text="${book.name}"></td>
+            <td th:text="${book.category}"></td>
+            <td th:text="${book.author.name+' '+book.author.surname}"></td>
+            <td th:text="${book.availableCopies}"></td>
+            <td>
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <form method="post" th:action="@{'/books/{id}/delete' (id=${book.id})}">
+                        <button type="submit" class="delete-item">Delete</button>
+                    </form>
+                    <a class="edit-item" th:href="@{'/books/{id}/edit' (id=${book.id})}">Edit</a>
+                    <form method="post" th:action="@{'/books/{id}/borrow' (id=${book.id})}">
+                        <button type="submit" class="edit-item">Mark As Taken</button>
+                    </form>
+                </th:block>
+            </td>
+        </tr>
+    </table>
+</div>
