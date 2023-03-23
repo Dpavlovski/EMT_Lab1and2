@@ -1,4 +1,4 @@
-package mk.ukim.finki.emt.lab.emt.lab.config;
+package mk.ukim.finki.emt.lab.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/login").permitAll()
+                .antMatchers("/", "/login","/api/**").permitAll()
                 .antMatchers("/books/**","/authors/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

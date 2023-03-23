@@ -1,18 +1,18 @@
-package mk.ukim.finki.emt.lab.emt.lab.service;
+package mk.ukim.finki.emt.lab.service;
 
-import mk.ukim.finki.emt.lab.emt.lab.model.Author;
-import mk.ukim.finki.emt.lab.emt.lab.model.Country;
+import mk.ukim.finki.emt.lab.model.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorService {
     List<Author> listAll();
 
-    Author findById(Long id);
+    Optional<Author> findById(Long id);
 
-    Author create(String name, String surname, Country country);
+    Author create(Author authorDto);
 
-    Author update(Long id, String name, String surname, Country country);
+    Author update(Long id, Author authorDto);
 
     void delete(Long id);
 }

@@ -1,6 +1,6 @@
-package mk.ukim.finki.emt.lab.emt.lab.service;
+package mk.ukim.finki.emt.lab.service;
 
-import mk.ukim.finki.emt.lab.emt.lab.model.Country;
+import mk.ukim.finki.emt.lab.model.Country;
 
 import java.util.List;
 

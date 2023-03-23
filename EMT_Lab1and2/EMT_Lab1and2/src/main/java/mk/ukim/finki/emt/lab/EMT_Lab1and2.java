@@ -1,4 +1,4 @@
-package mk.ukim.finki.emt.lab.emt.lab;
+package mk.ukim.finki.emt.lab;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

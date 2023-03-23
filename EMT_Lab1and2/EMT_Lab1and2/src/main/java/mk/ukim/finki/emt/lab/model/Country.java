@@ -1,4 +1,4 @@
-package mk.ukim.finki.emt.lab.emt.lab.model;
+package mk.ukim.finki.emt.lab.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

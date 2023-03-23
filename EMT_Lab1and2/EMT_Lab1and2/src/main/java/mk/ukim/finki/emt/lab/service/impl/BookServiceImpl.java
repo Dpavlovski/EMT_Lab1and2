@@ -1,14 +1,16 @@
-package mk.ukim.finki.emt.lab.emt.lab.service.impl;
+package mk.ukim.finki.emt.lab.service.impl;
 
-import mk.ukim.finki.emt.lab.emt.lab.model.Author;
-import mk.ukim.finki.emt.lab.emt.lab.model.Book;
-import mk.ukim.finki.emt.lab.emt.lab.model.Category;
-import mk.ukim.finki.emt.lab.emt.lab.model.exceptions.InvalidBookIdException;
-import mk.ukim.finki.emt.lab.emt.lab.repository.BookRepository;
-import mk.ukim.finki.emt.lab.emt.lab.service.BookService;
+import mk.ukim.finki.emt.lab.model.Book;
+import mk.ukim.finki.emt.lab.model.exceptions.InvalidBookIdException;
+import mk.ukim.finki.emt.lab.repository.BookRepository;
+import mk.ukim.finki.emt.lab.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -24,35 +26,44 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(Long id) {
-        return this.bookRepository.findById(id).orElseThrow(InvalidBookIdException::new);
+    public Optional<Book> findById(Long id) {
+        return this.bookRepository.findById(id);
     }
 
     @Override
-    public Book create(String name, Category category, Author author, Integer availableCopies) {
-        return this.bookRepository.save(new Book(name, category, author,availableCopies));
-    }
-
-    @Override
-    public Book update(Long id, String name,Category category, Author author, Integer availableCopies) {
-        Book book = this.findById(id);
-        book.setName(name);
-        book.setCategory(category);
-        book.setAuthor(author);
-        book.setAvailableCopies(availableCopies);
+    public Book create(Book book) {
         return this.bookRepository.save(book);
     }
 
     @Override
+    public Book update(Long id, Book bookDto) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(InvalidBookIdException::new);
+        book.setName(bookDto.getName());
+        book.setAuthor(bookDto.getAuthor());
+        book.setCategory(bookDto.getCategory());
+        book.setAvailableCopies(bookDto.getAvailableCopies());
+        return bookRepository.save(book);
+    }
+
+    @Override
     public void delete(Long id) {
-        Book book = findById(id);
-        this.bookRepository.delete(book);
+        Optional<Book> book = findById(id);
+        book.ifPresent(this.bookRepository::delete);
     }
     @Override
-    public void borrowBook(Long id) {
-        Book book = findById(id);
-        if(book.getAvailableCopies()==0) return;
-        book.setAvailableCopies(book.getAvailableCopies()-1);
-        bookRepository.save(book);
+    public Optional<Book> borrowBook(Long id) {
+        Optional<Book> book = findById(id);
+        if(book.isPresent()){
+            if(book.get().getAvailableCopies()==0) return Optional.empty();
+            book.get().setAvailableCopies(book.get().getAvailableCopies()-1);
+            bookRepository.save(book.get());
+        }
+        return book;
+    }
+
+    @Override
+    public Page<Book> listAllWithPagination(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 }
